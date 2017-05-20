@@ -8,6 +8,8 @@
 
 import UIKit
 
+//test git
+
 private enum ToDoItemPriority:Int {
     case normal
     case low
@@ -123,7 +125,12 @@ private class TodoItemsDataSource: NSObject, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        
+        if (editingStyle == UITableViewCellEditingStyle.delete) {
+            
+            items.remove(at: indexPath.row)
+            save()
+            tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+        }
     }
     
     func addItem(item: ToDoItem) {
@@ -132,16 +139,18 @@ private class TodoItemsDataSource: NSObject, UITableViewDataSource {
     }
     
     func load() {
-        guard let loadedData = NSKeyedUnarchiver.unarchiveObject(withFile: "/Developer/projects/ToDoList.bin") as? [ToDoItem] else {
+        guard let loadedData = NSKeyedUnarchiver.unarchiveObject(withFile: "/Users/andreykrit/Desktop/Develop/ToDoListToDoList.bin") as? [ToDoItem] else {
             return
         }
         items = loadedData
     }
     
     func save() {
-        let result = NSKeyedArchiver.archiveRootObject(items, toFile: "/Developer/projects/ToDoList.bin")
+        let result = NSKeyedArchiver.archiveRootObject(items, toFile: "/Users/andreykrit/Desktop/Develop/ToDoListToDoList.bin")
         print("Archive Result: \(result)")
     }
+    
+    
 }
 
 class ViewController: UIViewController, UITableViewDelegate {
